@@ -10,3 +10,41 @@
  *  Readable Streams = Recebendo um arquivo
  *  Writable Streams = Enviando um arquivo
  */
+
+import { Readable, Writable, Transform } from "node:stream"
+ class OneToHundredReadStream extends Readable {
+    index = 1;
+
+    _read() {
+        const i = this.index++;
+
+        
+        if (this.index > 101) {
+            this.push(null)
+        }
+        else {
+            setTimeout(() => {
+                const buf = Buffer.from(i.toString())
+                this.push(buf)
+
+            }, 100)
+        }
+    }
+}
+
+class InverseNumberStream extends Transform {
+    _transform(chunk, encoding, callback) {
+        const transformed = Number(chunk.toString()) * -1;
+
+        callback(null, Buffer.from(transformed.toString()));
+    }
+}
+
+class MultiplyByTenStream extends Writable {
+    _write(chunk, encoding, callback) {
+        console.log(Number(chunk) * 10);
+        callback();
+    }
+}
+
+new OneToHundredReadStream().pipe(new InverseNumberStream()).pipe(new MultiplyByTenStream())
