@@ -1,3 +1,6 @@
 [submodule "nodejs2"]
 	path = nodejs2
 	url = https://github.com/sergipe085/nodejs.git
+[submodule "nodejs"]
+	path = nodejs
+	url = https://github.com/sergipe085/nodejs.git
